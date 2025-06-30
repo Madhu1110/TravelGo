@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Trains - TravelGo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .train-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .train-card button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .train-card button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Search & Book Trains</h2>
+        <form id="searchForm">
+            <select id="source" required>
+                <option value="">From</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Vijayawada">Vijayawada</option>
+                <option value="Guntur">Guntur</option>
+                <option value="Bengaluru">Bengaluru</option>
+            </select>
+            <select id="destination" required>
+                <option value="">To</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Mumbai">Mumbai</option>
+            </select>
+            <input type="date" id="travelDate" required value="2025-06-27">
+            <input type="number" id="persons" placeholder="No. of Persons" min="1" value="1" required>
+            <button type="submit">Search</button>
+        </form>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const sampleTrains = [
+            { id: 1, name: "Duronto Express", number: "12285", source: "Hyderabad", destination: "Delhi", departure: "07:00 AM", arrival: "05:00 AM", price: 1800, date: "2025-06-27" },
+            { id: 2, name: "AP Express", number: "12723", source: "Hyderabad", destination: "Vijayawada", departure: "09:00 AM", arrival: "03:00 PM", price: 450, date: "2025-06-27" },
+            { id: 3, name: "Gouthami Express", number: "12737", source: "Guntur", destination: "Hyderabad", departure: "08:00 PM", arrival: "06:00 AM", price: 600, date: "2025-06-27" },
+            { id: 4, name: "Chennai Express", number: "12839", source: "Bengaluru", destination: "Chennai", departure: "10:30 AM", arrival: "05:30 PM", price: 750, date: "2025-06-27" },
+            { id: 5, name: "Mumbai Mail", number: "12101", source: "Hyderabad", destination: "Mumbai", departure: "06:00 PM", arrival: "09:00 AM", price: 1200, date: "2025-06-27" },
+            { id: 6, name: "Godavari Express", number: "12720", source: "Vijayawada", destination: "Hyderabad", departure: "05:00 PM", arrival: "11:00 PM", price: 400, date: "2025-06-27" },
+        ];
+
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const source = document.getElementById('source').value.trim();
+            const destination = document.getElementById('destination').value.trim();
+            const date = document.getElementById('travelDate').value;
+            const persons = parseInt(document.getElementById('persons').value);
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            console.log({ source, destination, date, persons });  // For debugging
+
+            const filtered = sampleTrains.filter(train =>
+                train.source === source &&
+                train.destination === destination &&
+                train.date === date
+            );
+
+            if (filtered.length === 0) {
+                resultsDiv.innerHTML = '<p>No trains found.</p>';
+                return;
+            }
+
+            filtered.forEach(train => {
+                const total = train.price * persons;
+                const div = document.createElement('div');
+                div.className = 'train-card';
+                div.innerHTML = `
+                    <h3>${train.name} (${train.number})</h3>
+                    <p><strong>From:</strong> ${train.source} <strong>To:</strong> ${train.destination}</p>
+                    <p><strong>Departure:</strong> ${train.departure} <strong>Arrival:</strong> ${train.arrival}</p>
+                    <p><strong>Date:</strong> ${train.date}</p>
+                    <p><strong>Price per person:</strong> ₹${train.price}</p>
+                    <p><strong>Total for ${persons}:</strong> ₹${total}</p>
+                    <form action="/confirm_train_details" method="get">
+                        <input type="hidden" name="name" value="${train.name}" />
+                        <input type="hidden" name="trainNumber" value="${train.number}" />
+                        <input type="hidden" name="source" value="${train.source}" />
+                        <input type="hidden" name="destination" value="${train.destination}" />
+                        <input type="hidden" name="departureTime" value="${train.departure}" />
+                        <input type="hidden" name="arrivalTime" value="${train.arrival}" />
+                        <input type="hidden" name="price" value="${train.price}" />
+                        <input type="hidden" name="date" value="${train.date}" />
+                        <input type="hidden" name="persons" value="${persons}" />
+                        <input type="hidden" name="trainId" value="${train.id}" />
+                        <button type="submit">Book Now</button>
+                    </form>
+                `;
+                resultsDiv.appendChild(div);
+            });
+        });
+    </script>
+</body>
+</html>

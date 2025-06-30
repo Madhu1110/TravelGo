@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select Seats - TravelGo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f8ff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #004aad;
+      margin-bottom: 10px;
+    }
+
+    .info {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .seat-map {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      justify-items: center;
+      margin-bottom: 20px;
+    }
+
+    .seat {
+      width: 60px;
+      height: 45px;
+      background: #d3e5ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .seat:hover {
+      background: #b8d6ff;
+    }
+
+    .selected {
+      background: #004aad;
+      color: white;
+    }
+
+    .booked {
+      background: #999;
+      color: white;
+      pointer-events: none;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #00a36c;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #008955;
+    }
+
+    @media (max-width: 500px) {
+      .seat-map {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Select Your Seats</h2>
+  <div class="info">You can select <strong>{{ booking.num_persons }}</strong> seat(s)</div>
+
+  <form method="POST" action="{{ url_for('final_confirm_bus_booking') }}" onsubmit="return validateSeats()">
+    <div class="seat-map" id="seat-map">
+      {% for seat in all_seats %}
+        <div class="seat {% if seat in booked_seats %}booked{% endif %}" 
+             onclick="selectSeat(this)" 
+             data-seat="{{ seat }}">{{ seat }}</div>
+      {% endfor %}
+    </div>
+
+    <input type="hidden" name="selected_seats" id="selected-seats" />
+    <button type="submit">Confirm Booking</button>
+  </form>
+
+  <script>
+    const maxSeats = {{ booking.num_persons }};
+    const selected = [];
+
+    function selectSeat(elem) {
+      if (elem.classList.contains('booked')) return;
+
+      const seat = elem.getAttribute('data-seat');
+
+      if (elem.classList.contains('selected')) {
+        elem.classList.remove('selected');
+        selected.splice(selected.indexOf(seat), 1);
+      } else if (selected.length < maxSeats) {
+        elem.classList.add('selected');
+        selected.push(seat);
+      } else {
+        alert(`You can only select ${maxSeats} seat(s).`);
+      }
+
+      document.getElementById('selected-seats').value = selected.join(',');
+    }
+
+    function validateSeats() {
+      if (selected.length !== maxSeats) {
+        alert(`Please select exactly ${maxSeats} seat(s).`);
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>

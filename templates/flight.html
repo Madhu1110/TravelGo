@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Flights - TravelGo</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    body {
+      background: #f3f8ff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    header {
+      background: linear-gradient(to right, #004aad, #0078d7);
+      color: white;
+      padding: 20px 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      color: #004aad;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    .form-inline .form-control {
+      margin-right: 15px;
+      margin-bottom: 10px;
+    }
+
+    .flight-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background: #fefefe;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      transition: transform 0.2s ease-in-out;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .flight-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .flight-info {
+      flex: 3;
+      min-width: 220px;
+    }
+
+    .flight-info strong {
+      font-size: 1.1em;
+      color: #004aad;
+    }
+
+    .flight-info span {
+      display: block;
+      font-size: 0.95em;
+      color: #444;
+      margin-top: 4px;
+    }
+
+    .price-info {
+      flex: 1;
+      text-align: center;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #28a745;
+    }
+
+    .book-btn {
+      background: #00a36c;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+
+    .book-btn:hover {
+      background: #008955;
+    }
+
+    @media (max-width: 768px) {
+      .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .form-inline .form-control,
+      .form-inline .btn {
+        width: 100%;
+        margin-right: 0;
+      }
+
+      .flight-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .price-info {
+        text-align: left;
+        margin-top: 10px;
+      }
+
+      .book-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><i class="fas fa-plane-departure"></i> TravelGo</h1>
+  </header>
+
+  <main class="container">
+    <h2><i class="fas fa-search-location"></i> Search & Book Flights</h2>
+
+    <form id="searchForm" class="form-inline">
+      <select id="source" class="form-control">
+        <option value="">From</option>
+        <option value="Hyderabad">Hyderabad</option>
+        <option value="Bengaluru">Bengaluru</option>
+        <option value="Chennai">Chennai</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Delhi">Delhi</option>
+      </select>
+
+      <select id="destination" class="form-control">
+        <option value="">To</option>
+        <option value="Hyderabad">Hyderabad</option>
+        <option value="Bengaluru">Bengaluru</option>
+        <option value="Chennai">Chennai</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Delhi">Delhi</option>
+      </select>
+
+      <input type="date" id="date" class="form-control" />
+      <input type="number" id="numPersons" class="form-control" min="1" value="1" placeholder="Passengers" />
+      <button type="button" id="search-btn" class="btn btn-primary">
+        <i class="fas fa-search"></i> Search
+      </button>
+    </form>
+
+    <div id="flight-list" class="mt-4"></div>
+  </main>
+
+  <script>
+    const flights = [
+      { id: 'FLT001', airline: 'IndiGo', number: '6E-234', source: 'Hyderabad', dest: 'Mumbai', depart: '08:00', arrive: '09:30', price: 3500 },
+      { id: 'FLT002', airline: 'Vistara', number: 'UK-876', source: 'Bengaluru', dest: 'Delhi', depart: '12:00', arrive: '14:45', price: 4500 },
+      { id: 'FLT003', airline: 'Air India', number: 'AI-543', source: 'Chennai', dest: 'Hyderabad', depart: '06:00', arrive: '07:20', price: 2800 },
+      { id: 'FLT004', airline: 'SpiceJet', number: 'SG-123', source: 'Mumbai', dest: 'Bengaluru', depart: '18:00', arrive: '19:30', price: 3200 }
+    ];
+
+    function filterFlights() {
+      const src = document.getElementById('source').value;
+      const dst = document.getElementById('destination').value;
+      const date = document.getElementById('date').value;
+      const pax = parseInt(document.getElementById('numPersons').value);
+      const list = document.getElementById('flight-list');
+      list.innerHTML = '';
+
+      if (!src || !dst || !date || pax < 1) return;
+
+      const filtered = flights.filter(f => f.source === src && f.dest === dst);
+      filtered.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'flight-card';
+        card.innerHTML = `
+          <div class="flight-info">
+            <strong>${f.airline} ${f.number}</strong>
+            <span>${f.source} → ${f.dest}</span>
+            <span>${date} | ${f.depart} - ${f.arrive}</span>
+          </div>
+          <div class="price-info">
+            ₹${f.price} x ${pax} = ₹${f.price * pax}
+            <br><button class="book-btn mt-2"
+              onclick="confirmFlight('${f.id}','${f.airline}','${f.number}','${f.source}','${f.dest}','${f.depart}','${f.arrive}','${date}',${pax},${f.price})">
+              Book
+            </button>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="alert alert-warning">No flights found for selected route.</div>`;
+      }
+    }
+
+    function confirmFlight(id, airline, number, src, dst, depart, arrive, date, pax, price) {
+      const url = `/confirm_flight_details?flight_id=${id}&airline=${airline}&flight_number=${number}&source=${src}&destination=${dst}&departure=${depart}&arrival=${arrive}&date=${date}&passengers=${pax}&price=${price}`;
+      window.location.href = url;
+    }
+
+    document.getElementById('search-btn').addEventListener('click', filterFlights);
+  </script>
+</body>
+</html>

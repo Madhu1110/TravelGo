@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TravelGo - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-container h2 {
+      margin-bottom: 24px;
+      color: #5a3ea1;
+      font-size: 28px;
+    }
+
+    .input-group {
+      position: relative;
+      margin: 15px 0;
+    }
+
+    .input-group i {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      color: #888;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #5a3ea1;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #5a3ea1, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #4a2f8c, #6533a2);
+    }
+
+    p {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    a {
+      color: #5a3ea1;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      margin-top: 12px;
+      color: #e63946;
+      font-size: 14px;
+    }
+
+    @media screen and (max-width: 480px) {
+      .form-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Login to TravelGo</h2>
+    <form method="POST" action="/login">
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    {% if message %}
+      <div class="error">{{ message }}</div>
+    {% endif %}
+    <p>Don't have an account? <a href="{{ url_for('register') }}">Register Here</a></p>
+  </div>
+</body>
+</html>

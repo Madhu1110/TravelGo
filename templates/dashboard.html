@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - TravelGo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f3f8ff;
+            color: #333;
+        }
+
+        header {
+            background-color: #004aad;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 26px;
+            margin: 0;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        header nav a:hover {
+            color: #ffdd57;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .welcome-section h2 {
+            color: #004aad;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .booking-options {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .booking-options a {
+            text-decoration: none;
+            flex: 1 1 22%;
+            min-width: 150px;
+        }
+
+        .option-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .option-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .option-card span {
+            font-weight: bold;
+            color: #004aad;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .booking-list h3 {
+            color: #004aad;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .booking-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .booking-info {
+            flex: 3;
+            text-align: left;
+            min-width: 250px;
+        }
+
+        .booking-info h4 {
+            color: #004aad;
+            margin-bottom: 5px;
+            font-size: 1.2em;
+        }
+
+        .booking-info p {
+            margin: 2px 0;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .booking-actions {
+            flex: 1;
+            text-align: right;
+            min-width: 120px;
+        }
+
+        .booking-actions .total-price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+
+        .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .cancel-btn:hover {
+            background-color: #c82333;
+        }
+
+        .no-bookings {
+            text-align: center;
+            padding: 30px;
+            font-size: 1.1em;
+            color: #777;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 1px dashed #e0e0e0;
+        }
+
+        footer {
+            background-color: #003380;
+            color: white;
+            text-align: center;
+            padding: 20px 40px;
+            font-size: 0.9em;
+            margin-top: 50px;
+        }
+
+        .flash-message {
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 768px) {
+            .booking-options {
+                flex-direction: row;
+                gap: 15px;
+            }
+
+            .booking-options a {
+                flex: 1 1 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .booking-options a {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TravelGo</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h2>Welcome, {{ username }}!</h2>
+            <p>Here you can view your upcoming and past travel bookings.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="booking-options">
+            <a href="/bus">
+                <div class="option-card">
+                    <img src="https://placehold.co/80x80/007bff/ffffff?text=Bus" alt="Bus">
+                    <span>Bus</span>
+                </div>
+            </a>
+            <a href="/train">
+                <div class="option-card">
+                    <img src="https://placehold.co/80x80/004aad/ffffff?text=Train" alt="Train">
+                    <span>Train</span>
+                </div>
+            </a>
+            <a href="/flight">
+                <div class="option-card">
+                    <img src="https://placehold.co/80x80/28a745/ffffff?text=Flight" alt="Flight">
+                    <span>Flight</span>
+                </div>
+            </a>
+            <a href="/hotel">
+                <div class="option-card">
+                    <img src="https://placehold.co/80x80/ffc107/ffffff?text=Hotel" alt="Hotel">
+                    <span>Hotel</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="bookings">
+            <h3>YOUR BOOKINGS</h3>
+            {% if bookings %}
+                {% for booking in bookings %}
+                    <div class="booking-card">
+                        <div class="booking-info">
+                            <h4>{{ booking.booking_type|capitalize }} Booking</h4>
+                            {% if booking.booking_type == 'hotel' %}
+                                <p><strong>Hotel:</strong> {{ booking.name }}</p>
+                                <p><strong>Location:</strong> {{ booking.location }}</p>
+                                <p><strong>Check-in:</strong> {{ booking.checkin_date }}</p>
+                                <p><strong>Check-out:</strong> {{ booking.checkout_date }}</p>
+                                <p><strong>Rooms:</strong> {{ booking.num_rooms }}</p>
+                                <p><strong>Guests:</strong> {{ booking.num_guests }}</p>
+                            {% elif booking.booking_type == 'train' %}
+                                <p><strong>Train:</strong> {{ booking.name }} ({{ booking.train_number }})</p>
+                                <p><strong>Route:</strong> {{ booking.source }} → {{ booking.destination }}</p>
+                                <p><strong>Date:</strong> {{ booking.travel_date }}</p>
+                                <p><strong>Time:</strong> {{ booking.departure_time }} - {{ booking.arrival_time }}</p>
+                                <p><strong>Passengers:</strong> {{ booking.num_persons }}</p>
+                                {% if booking.seats_display %}
+                                    <p><strong>Seats:</strong> {{ booking.seats_display }}</p>
+                                {% endif %}
+                            {% elif booking.booking_type == 'bus' %}
+                                <p><strong>Bus:</strong> {{ booking.name }}</p>
+                                <p><strong>Route:</strong> {{ booking.source }} → {{ booking.destination }}</p>
+                                <p><strong>Date:</strong> {{ booking.travel_date }}</p>
+                                <p><strong>Time:</strong> {{ booking.time }}</p>
+                                <p><strong>Seats:</strong> {{ booking.seats_display }}</p>
+                                <p><strong>Passengers:</strong> {{ booking.num_persons }}</p>
+                            {% elif booking.booking_type == 'flight' %}
+                                <p><strong>Flight:</strong> {{ booking.airline }} {{ booking.flight_number }}</p>
+                                <p><strong>Route:</strong> {{ booking.source }} → {{ booking.destination }}</p>
+                                <p><strong>Date:</strong> {{ booking.travel_date }}</p>
+                                <p><strong>Departure:</strong> {{ booking.departure_time }}</p>
+                                <p><strong>Arrival:</strong> {{ booking.arrival_time }}</p>
+                                <p><strong>Passengers:</strong> {{ booking.num_persons }}</p>
+                            {% endif %}
+                            <p><strong>Booked On:</strong> {{ booking.booking_date.split('T')[0] }}</p>
+                        </div>
+                        <div class="booking-actions">
+                            <div class="total-price">₹{{ "{:,.2f}".format(booking.total_price) }}</div>
+                            <form action="/cancel_booking" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                                <input type="hidden" name="booking_date" value="{{ booking.booking_date }}">
+                                <button type="submit" class="cancel-btn">Cancel Booking</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-bookings">You have no bookings yet. Start by searching for a trip!</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 TravelGo. All rights reserved.
+    </footer>
+</body>
+</html>

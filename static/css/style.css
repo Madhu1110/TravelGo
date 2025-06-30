@@ -1,0 +1,269 @@
+/* static/css/style.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f3f8ff;
+    color: #333;
+}
+
+header {
+    background-color: #004aad;
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 26px;
+    margin: 0;
+}
+
+header nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+header nav a:hover {
+    color: #ffdd57;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+h2 {
+    color: #004aad;
+    margin-bottom: 25px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+select, input[type="date"], input[type="number"], input[type="text"], input[type="password"], input[type="email"] {
+    flex: 1 1 160px; /* Adjust as needed for smaller inputs */
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.search-btn, .submit-btn { /* Combined for styling consistency */
+    background-color: #004aad;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.search-btn:hover, .submit-btn:hover {
+    background-color: #00307c;
+}
+
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filters label {
+    background: #e6f0ff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.sort-row {
+    margin-bottom: 20px;
+}
+
+.sort-row label {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.bus-list, .booking-list { /* Generalized for bus and dashboard */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bus-card, .booking-card { /* Generalized for bus and dashboard */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9fbff;
+    border: 1px solid #dbe7ff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.bus-card strong, .booking-card strong {
+    color: #004aad;
+    font-size: 17px;
+}
+
+.book-btn {
+    background: #00a36c;
+    color: white;
+    padding: 8px 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.book-btn:hover {
+    background: #008955;
+}
+
+.flash-message {
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-message.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flash-message.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Specific styles for auth forms */
+.auth-form-container {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.auth-form-container h2 {
+    margin-bottom: 30px;
+}
+
+.auth-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form-container input[type="text"],
+.auth-form-container input[type="password"],
+.auth-form-container input[type="email"] {
+    width: auto; /* Override flex-grow from .form-row */
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.auth-form-container .submit-btn {
+    padding: 12px 25px;
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+.auth-form-container p {
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.auth-form-container p a {
+    color: #004aad;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-form-container p a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px 20px;
+    }
+
+    header nav {
+        margin-top: 10px;
+    }
+
+    header nav a {
+        margin: 0 10px;
+    }
+
+    .container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .bus-card, .booking-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .book-btn {
+        margin-top: 10px;
+    }
+
+    .auth-form-container {
+        margin: 30px 15px;
+        padding: 20px;
+    }
+}

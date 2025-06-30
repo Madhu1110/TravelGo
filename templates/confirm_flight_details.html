@@ -1,0 +1,48 @@
+<!-- templates/confirm_flight_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Flight Booking - TravelGo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { background: #f3f8ff; font-family: 'Segoe UI', sans-serif; }
+        .container { max-width: 600px; margin: 60px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        h2 { color: #004aad; margin-bottom: 20px; }
+        .detail-list { list-style: none; padding: 0; }
+        .detail-list li { margin-bottom: 10px; }
+        .btn-confirm { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; }
+        .btn-confirm:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Confirm Your Flight Booking</h2>
+        <ul class="detail-list">
+            <li><strong>Airline:</strong> {{ booking.airline }} ({{ booking.flight_number }})</li>
+            <li><strong>Route:</strong> {{ booking.source }} → {{ booking.destination }}</li>
+            <li><strong>Date:</strong> {{ booking.travel_date }}</li>
+            <li><strong>Departure:</strong> {{ booking.departure_time }}</li>
+            <li><strong>Arrival:</strong> {{ booking.arrival_time }}</li>
+            <li><strong>Passengers:</strong> {{ booking.num_persons }}</li>
+            <li><strong>Price/person:</strong> ₹{{ booking.price_per_person }}</li>
+            <li><strong>Total Price:</strong> ₹{{ booking.total_price }}</li>
+        </ul>
+        <form method="POST" action="{{ url_for('confirm_flight_booking') }}">
+            <input type="hidden" name="flight_id" value="{{ booking.flight_id }}">
+            <input type="hidden" name="airline" value="{{ booking.airline }}">
+            <input type="hidden" name="flight_number" value="{{ booking.flight_number }}">
+            <input type="hidden" name="source" value="{{ booking.source }}">
+            <input type="hidden" name="destination" value="{{ booking.destination }}">
+            <input type="hidden" name="departure_time" value="{{ booking.departure_time }}">
+            <input type="hidden" name="arrival_time" value="{{ booking.arrival_time }}">
+            <input type="hidden" name="travel_date" value="{{ booking.travel_date }}">
+            <input type="hidden" name="num_persons" value="{{ booking.num_persons }}">
+            <input type="hidden" name="price_per_person" value="{{ booking.price_per_person }}">
+            <input type="hidden" name="total_price" value="{{ booking.total_price }}">
+            <button type="submit" class="btn-confirm">Confirm Booking</button>
+        </form>
+    </div>
+</body>
+</html>
