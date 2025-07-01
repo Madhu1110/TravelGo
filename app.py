@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key_here' # IMPORTANT: Change this to a strong, random key in production!
 
 # AWS Setup using IAM Role
-REGION = 'ap-south-1'  # Replace with your actual AWS region
+REGION = 'us-east-1'  # Replace with your actual AWS region
 dynamodb = boto3.resource('dynamodb', region_name=REGION)
 sns_client = boto3.client('sns', region_name=REGION)
 
